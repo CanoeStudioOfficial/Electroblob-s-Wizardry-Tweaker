@@ -42,15 +42,6 @@ public final class ImbuementAltarRegistry {
         removals.add(removal);
     }
 
-    public synchronized void clearCustomRecipes() {
-        recipes.clear();
-    }
-
-    public synchronized void clearRemovals() {
-        removals.clear();
-        removeAllVanilla = false;
-    }
-
     public synchronized void setRemoveAllVanilla(boolean removeAllVanilla) {
         this.removeAllVanilla = removeAllVanilla;
     }

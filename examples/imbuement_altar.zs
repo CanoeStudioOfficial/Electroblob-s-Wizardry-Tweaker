@@ -6,9 +6,6 @@
 
 import mods.ebwizardrytweaker.ImbuementAltar;
 
-// Recommended at the top of your script so repeated script execution does not stack duplicates
-ImbuementAltar.clearAll();
-
 // ---------------------------------------------------------------------------
 // Element names (receptacle spectral dust):
 //   magic, fire, ice, lightning, necromancy, earth, sorcery, healing

@@ -77,16 +77,6 @@ ImbuementAltar.removeRecipe(<ebwizardry:magic_crystal>, "fire", "fire", "fire", 
 ImbuementAltar.removeAllVanilla();
 ```
 
-### Clear CT rules
-
-```zenscript
-// recommended at the top of your script to avoid duplicate rules if scripts are executed more than once
-ImbuementAltar.clearAll();
-
-// clears only CT-added recipes, leaving removal rules in place
-ImbuementAltar.clear();
-```
-
 See also `examples/imbuement_altar.zs`.
 
 ## How it works

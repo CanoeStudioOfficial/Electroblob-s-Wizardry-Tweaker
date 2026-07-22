@@ -148,23 +148,6 @@ public final class ImbuementAltar {
         CraftTweakerAPI.apply(new SetRemoveAllVanillaAction(value));
     }
 
-    /**
-     * Removes all CraftTweaker-added imbuement recipes (does not restore vanilla recipes / removals).
-     */
-    @ZenMethod
-    public static void clear() {
-        CraftTweakerAPI.apply(new ClearRecipesAction());
-    }
-
-    /**
-     * Clears CT recipes, removal rules, and the removeAllVanilla flag.
-     * Call this at the top of your script before re-adding recipes so repeated script execution does not stack duplicates.
-     */
-    @ZenMethod
-    public static void clearAll() {
-        CraftTweakerAPI.apply(new ClearAllAction());
-    }
-
     private static String buildAddCommand(IIngredient input, IItemStack output, String[] elements, boolean ordered) {
         String method = ordered ? "addOrderedRecipe" : "addRecipe";
         return "mods.ebwizardrytweaker.ImbuementAltar." + method + "("
@@ -250,30 +233,4 @@ public final class ImbuementAltar {
         }
     }
 
-    private static final class ClearRecipesAction implements IAction {
-
-        @Override
-        public void apply() {
-            ImbuementAltarRegistry.INSTANCE.clearCustomRecipes();
-        }
-
-        @Override
-        public String describe() {
-            return "Clearing all CraftTweaker imbuement altar recipes";
-        }
-    }
-
-    private static final class ClearAllAction implements IAction {
-
-        @Override
-        public void apply() {
-            ImbuementAltarRegistry.INSTANCE.clearCustomRecipes();
-            ImbuementAltarRegistry.INSTANCE.clearRemovals();
-        }
-
-        @Override
-        public String describe() {
-            return "Clearing all CraftTweaker imbuement altar recipes and removal rules";
-        }
-    }
 }
