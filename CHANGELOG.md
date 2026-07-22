@@ -1,6 +1,8 @@
 # Changelog
 
-## [1.0.0] - 2023-09-15
+## [1.0.0] - 2026-07-22
 
 ### Added
-- This is a default template changelog that follows the [KeepAChangelog Convention](https://keepachangelog.com/en/1.1.0/)
+- CraftTweaker support for the Imbuement Altar (注灵祭坛) via `mods.ebwizardry.ImbuementAltar`
+- Add / remove / clear APIs with ordered and unordered element matching
+- Example script: `examples/imbuement_altar.zs`
