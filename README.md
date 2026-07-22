@@ -12,8 +12,6 @@ CraftTweaker support for [Electroblob's Wizardry](https://www.curseforge.com/min
 
 ZenScript class: `mods.ebwizardrytweaker.ImbuementAltar`
 
-Legacy alias also works: `mods.ebwizardry.ImbuementAltar`
-
 Surrounding receptacles use **spectral dust** elements. Element name strings:
 
 | Name | Meaning |

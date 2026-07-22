@@ -15,7 +15,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 /**
  * CraftTweaker entry point for the Electroblob's Wizardry imbuement altar (注灵祭坛).
  *
- * <p>ZenScript package: {@code mods.ebwizardry.ImbuementAltar}</p>
+ * <p>ZenScript package: {@code mods.ebwizardrytweaker.ImbuementAltar}</p>
  *
  * <p>Element names: {@code magic}, {@code fire}, {@code ice}, {@code lightning},
  * {@code necromancy}, {@code earth}, {@code sorcery}, {@code healing}.
@@ -27,7 +27,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
  */
 @ZenRegister
 @ModOnly("ebwizardry")
-@ZenClass("mods.ebwizardry.ImbuementAltar")
+@ZenClass("mods.ebwizardrytweaker.ImbuementAltar")
 public final class ImbuementAltar {
 
     private ImbuementAltar() {
@@ -93,7 +93,7 @@ public final class ImbuementAltar {
             CraftTweakerAPI.logError("ImbuementAltar: input cannot be null");
             return;
         }
-        String command = "mods.ebwizardry.ImbuementAltar.removeByInput(" + input.toCommandString() + ");";
+        String command = "mods.ebwizardrytweaker.ImbuementAltar.removeByInput(" + input.toCommandString() + ");";
         CraftTweakerAPI.apply(new AddRemovalAction(new ImbuementAltarRegistry.Removal(input, null, false, command)));
     }
 
@@ -167,7 +167,7 @@ public final class ImbuementAltar {
 
     private static String buildAddCommand(IIngredient input, IItemStack output, String[] elements, boolean ordered) {
         String method = ordered ? "addOrderedRecipe" : "addRecipe";
-        return "mods.ebwizardry.ImbuementAltar." + method + "("
+        return "mods.ebwizardrytweaker.ImbuementAltar." + method + "("
                 + input.toCommandString() + ", "
                 + output.toCommandString() + ", "
                 + formatStringArray(elements) + ");";
@@ -175,7 +175,7 @@ public final class ImbuementAltar {
 
     private static String buildRemoveCommand(IIngredient input, String[] elements, boolean ordered) {
         String method = ordered ? "removeOrderedRecipe" : "removeRecipe";
-        return "mods.ebwizardry.ImbuementAltar." + method + "("
+        return "mods.ebwizardrytweaker.ImbuementAltar." + method + "("
                 + input.toCommandString() + ", "
                 + formatStringArray(elements) + ");";
     }
