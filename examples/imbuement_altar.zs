@@ -6,7 +6,7 @@
 
 import mods.ebwizardrytweaker.ImbuementAltar;
 
-// Recommended at the top of your script so /ct reload does not stack duplicates
+// Recommended at the top of your script so repeated script execution does not stack duplicates
 ImbuementAltar.clearAll();
 
 // ---------------------------------------------------------------------------

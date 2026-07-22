@@ -80,7 +80,7 @@ ImbuementAltar.removeAllVanilla();
 ### Clear CT rules
 
 ```zenscript
-// recommended at the top of your script, especially before /ct reload
+// recommended at the top of your script to avoid duplicate rules if scripts are executed more than once
 ImbuementAltar.clearAll();
 
 // clears only CT-added recipes, leaving removal rules in place

@@ -158,7 +158,7 @@ public final class ImbuementAltar {
 
     /**
      * Clears CT recipes, removal rules, and the removeAllVanilla flag.
-     * Call this at the top of your script before re-adding recipes so {@code /ct reload} is safe.
+     * Call this at the top of your script before re-adding recipes so repeated script execution does not stack duplicates.
      */
     @ZenMethod
     public static void clearAll() {
