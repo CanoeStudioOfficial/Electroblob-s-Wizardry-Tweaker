@@ -3,6 +3,7 @@ package com.canoestudio.ebwizardrytweaker.crafttweaker;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
+import com.canoestudio.ebwizardrytweaker.EBWizardryTweaker;
 import electroblob.wizardry.constants.Element;
 import electroblob.wizardry.event.ImbuementActivateEvent;
 import net.minecraft.item.ItemStack;
@@ -100,12 +101,14 @@ public final class ImbuementAltarRegistry {
         if (recipe != null) {
             event.result = recipe.createOutput();
             event.setCanceled(true);
+            EBWizardryTweaker.LOGGER.debug("Matched CraftTweaker imbuement altar recipe: {}", recipe);
             return;
         }
 
         if (isRemoved(input, elements)) {
             event.result = ItemStack.EMPTY;
             event.setCanceled(true);
+            EBWizardryTweaker.LOGGER.debug("Suppressed imbuement altar recipe for input {} with elements {}", input, ImbuementAltarRecipe.formatElements(elements));
         }
     }
 

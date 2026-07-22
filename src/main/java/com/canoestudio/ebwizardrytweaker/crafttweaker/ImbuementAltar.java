@@ -6,6 +6,7 @@ import crafttweaker.annotations.ModOnly;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import com.canoestudio.ebwizardrytweaker.EBWizardryTweaker;
 import electroblob.wizardry.constants.Element;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -44,6 +45,11 @@ public final class ImbuementAltar {
         addRecipeInternal(input, output, elements, false);
     }
 
+    @ZenMethod
+    public static void addRecipe(IIngredient input, IItemStack output, String south, String west, String north, String east) {
+        addRecipeInternal(input, output, new String[]{south, west, north, east}, false);
+    }
+
     /**
      * Adds an imbuement recipe that requires elements in SWNE order
      * (South, West, North, East).
@@ -51,6 +57,11 @@ public final class ImbuementAltar {
     @ZenMethod
     public static void addOrderedRecipe(IIngredient input, IItemStack output, String[] elements) {
         addRecipeInternal(input, output, elements, true);
+    }
+
+    @ZenMethod
+    public static void addOrderedRecipe(IIngredient input, IItemStack output, String south, String west, String north, String east) {
+        addRecipeInternal(input, output, new String[]{south, west, north, east}, true);
     }
 
     private static void addRecipeInternal(IIngredient input, IItemStack output, String[] elements, boolean ordered) {
@@ -95,12 +106,22 @@ public final class ImbuementAltar {
         removeRecipeInternal(input, elements, false);
     }
 
+    @ZenMethod
+    public static void removeRecipe(IIngredient input, String south, String west, String north, String east) {
+        removeRecipeInternal(input, new String[]{south, west, north, east}, false);
+    }
+
     /**
      * Suppresses vanilla (and other non-CT) imbuement results for the given input + ordered elements.
      */
     @ZenMethod
     public static void removeOrderedRecipe(IIngredient input, String[] elements) {
         removeRecipeInternal(input, elements, true);
+    }
+
+    @ZenMethod
+    public static void removeOrderedRecipe(IIngredient input, String south, String west, String north, String east) {
+        removeRecipeInternal(input, new String[]{south, west, north, east}, true);
     }
 
     private static void removeRecipeInternal(IIngredient input, String[] elements, boolean ordered) {
@@ -181,6 +202,7 @@ public final class ImbuementAltar {
         @Override
         public void apply() {
             ImbuementAltarRegistry.INSTANCE.addRecipe(recipe);
+            EBWizardryTweaker.LOGGER.info("Registered CraftTweaker imbuement altar recipe: {}", recipe);
         }
 
         @Override
@@ -200,6 +222,7 @@ public final class ImbuementAltar {
         @Override
         public void apply() {
             ImbuementAltarRegistry.INSTANCE.addRemoval(removal);
+            EBWizardryTweaker.LOGGER.info("Registered CraftTweaker imbuement altar removal: {}", removal);
         }
 
         @Override
