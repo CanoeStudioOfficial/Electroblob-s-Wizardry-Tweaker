@@ -24,6 +24,19 @@ Ordered APIs use **SWNE** order: South -> West -> North -> East.
 
 The 4-string form is recommended because it is friendlier to CraftTweaker 1.12 scripts. The array form still works.
 
+### Parameter reference
+
+| Parameter | Type | Meaning |
+|-----------|------|---------|
+| `input` | `IIngredient` | The item placed in the center of the imbuement altar. This can be a normal item stack like `<minecraft:diamond>` or any CraftTweaker ingredient expression supported by CT. |
+| `output` | `IItemStack` | The item produced after the imbuement finishes, for example `<minecraft:emerald>`. |
+| `south`, `west`, `north`, `east` | `String` | The four receptacle elements around the altar. These names correspond to spectral dust elements. |
+| `elements` | `String[]` | Array form of the four element strings. It must contain exactly 4 entries. |
+
+For `addRecipe` and `removeRecipe`, element order does not matter. For example, four entries containing one `fire`, one `ice`, one `earth`, and one `healing` will match those four elements in any receptacle positions.
+
+For `addOrderedRecipe` and `removeOrderedRecipe`, element order does matter and must be written as `south`, `west`, `north`, `east`.
+
 ### Add recipes
 
 ```zenscript
@@ -42,6 +55,14 @@ ImbuementAltar.addOrderedRecipe(
 // array form is also accepted
 ImbuementAltar.addRecipe(<minecraft:diamond>, <minecraft:emerald>, ["fire", "fire", "fire", "fire"]);
 ```
+
+The first example means:
+
+| Argument | Value | Meaning |
+|----------|-------|---------|
+| `input` | `<minecraft:diamond>` | Put a diamond in the center altar slot. |
+| `output` | `<minecraft:emerald>` | The altar will output an emerald. |
+| elements | `"fire", "fire", "fire", "fire"` | All four receptacles need fire spectral dust. |
 
 ### Remove / suppress vanilla recipes
 
