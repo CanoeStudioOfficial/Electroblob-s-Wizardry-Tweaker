@@ -8,7 +8,7 @@ CraftTweaker support for [Electroblob's Wizardry](https://www.curseforge.com/min
 - Electroblob's Wizardry **4.3.5+** (provides `ImbuementActivateEvent`)
 - CraftTweaker 2
 
-## Imbuement Altar (注灵祭坛)
+## Imbuement Altar（注灵祭坛）
 
 ZenScript class: `mods.ebwizardrytweaker.ImbuementAltar`
 
@@ -28,8 +28,8 @@ The 4-string form is recommended because it is friendlier to CraftTweaker 1.12 s
 
 | Parameter | Type | Meaning |
 |-----------|------|---------|
-| `input` | `IIngredient` | The item placed in the center of the imbuement altar. This can be a normal item stack like `<minecraft:diamond>` or any CraftTweaker ingredient expression supported by CT. |
-| `output` | `IItemStack` | The item produced after the imbuement finishes, for example `<minecraft:emerald>`. |
+| `input` | `IIngredient` | The item placed in the center of the imbuement altar. This can be a normal item like `<minecraft:diamond>`, an ore dictionary ingredient, or any other CraftTweaker ingredient expression. |
+| `output` | `IItemStack` | The final item produced after imbuement finishes, for example `<minecraft:emerald>`. |
 | `south`, `west`, `north`, `east` | `String` | The four receptacle elements around the altar. These names correspond to spectral dust elements. |
 | `elements` | `String[]` | Array form of the four element strings. It must contain exactly 4 entries. |
 
@@ -85,7 +85,7 @@ Wizardry's imbuement altar resolves results in `TileEntityImbuementAltar#getImbu
 
 When a CraftTweaker action is applied, the mod logs `Registered CraftTweaker imbuement altar recipe` or `Registered CraftTweaker imbuement altar removal`. If that line is missing, the ZenScript method was not called.
 
-This integration changes altar behavior only. JEI display is still handled by Electroblob's Wizardry itself, so custom CraftTweaker imbuement recipes are not added to JEI by this mod.
+This integration changes altar behavior only. JEI display reuses Electroblob's Wizardry's existing imbuement altar category, and this mod injects CraftTweaker recipes into that same category.
 
 ## Building
 

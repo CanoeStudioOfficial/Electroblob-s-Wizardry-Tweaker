@@ -15,7 +15,7 @@ import mods.ebwizardrytweaker.ImbuementAltar;
 //
 // Common parameters:
 //   input  = item/ingredient placed in the center altar slot
-//   output = item produced after imbuement finishes
+//   output = final item produced after imbuement finishes
 //   south, west, north, east = four receptacle element names
 // ---------------------------------------------------------------------------
 
@@ -44,5 +44,5 @@ import mods.ebwizardrytweaker.ImbuementAltar;
 // Element order does not matter for removeRecipe.
 // ImbuementAltar.removeRecipe(<ebwizardry:magic_crystal>, "fire", "fire", "fire", "fire");
 
-// Suppress every vanilla imbuement altar recipe (CT-added recipes still work)
+// Suppress every vanilla imbuement altar recipe (CT-added recipes still work, JEI still shows CT recipes)
 // ImbuementAltar.removeAllVanilla();
