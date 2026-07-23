@@ -5,9 +5,12 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import electroblob.wizardry.constants.Element;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -17,6 +20,7 @@ import java.util.Objects;
 public class ImbuementAltarRecipe {
 
     private final IIngredient input;
+    private final Ingredient inputIngredient;
     private final IItemStack output;
     private final Element[] elements;
     private final boolean ordered;
@@ -24,6 +28,8 @@ public class ImbuementAltarRecipe {
 
     public ImbuementAltarRecipe(IIngredient input, IItemStack output, Element[] elements, boolean ordered, String commandString) {
         this.input = Objects.requireNonNull(input, "input");
+        Ingredient converted = CraftTweakerMC.getIngredient(input);
+        this.inputIngredient = converted == null ? Ingredient.EMPTY : converted;
         this.output = Objects.requireNonNull(output, "output");
         this.elements = Arrays.copyOf(Objects.requireNonNull(elements, "elements"), elements.length);
         this.ordered = ordered;
@@ -57,16 +63,14 @@ public class ImbuementAltarRecipe {
         if (!matchesElements(receptacleElements)) {
             return false;
         }
-        IItemStack ctStack = CraftTweakerMC.getIItemStack(stack);
-        return ctStack != null && input.matches(ctStack);
+        return this.inputIngredient.apply(stack);
     }
 
     public boolean matchesInput(ItemStack stack) {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        IItemStack ctStack = CraftTweakerMC.getIItemStack(stack);
-        return ctStack != null && input.matches(ctStack);
+        return this.inputIngredient.apply(stack);
     }
 
     public boolean matchesElements(Element[] receptacleElements) {
@@ -140,6 +144,40 @@ public class ImbuementAltarRecipe {
             builder.append(elements[i] == null ? "empty" : elements[i].getName());
         }
         return builder.append(']').toString();
+    }
+
+    public List<ItemStack> getDisplayStacks() {
+        return getDisplayStacks(this.inputIngredient);
+    }
+
+    public static boolean matchesIngredient(@Nullable Ingredient ingredient, @Nullable ItemStack stack) {
+        if (ingredient == null || stack == null || stack.isEmpty()) {
+            return false;
+        }
+        return ingredient.apply(stack);
+    }
+
+    public static List<ItemStack> getDisplayStacks(@Nullable Ingredient ingredient) {
+        List<ItemStack> stacks = new ArrayList<>();
+        if (ingredient == null || ingredient == Ingredient.EMPTY) {
+            return stacks;
+        }
+        for (ItemStack example : ingredient.getMatchingStacks()) {
+            addDisplayStack(stacks, example);
+        }
+        return stacks;
+    }
+
+    private static void addDisplayStack(List<ItemStack> stacks, ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return;
+        }
+        for (ItemStack existing : stacks) {
+            if (ItemStack.areItemsEqual(existing, stack) && ItemStack.areItemStackTagsEqual(existing, stack)) {
+                return;
+            }
+        }
+        stacks.add(stack.copy());
     }
 
     @Override

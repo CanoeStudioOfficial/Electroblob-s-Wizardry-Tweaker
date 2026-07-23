@@ -7,6 +7,7 @@ import com.canoestudio.ebwizardrytweaker.EBWizardryTweaker;
 import electroblob.wizardry.constants.Element;
 import electroblob.wizardry.event.ImbuementActivateEvent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -109,6 +110,7 @@ public final class ImbuementAltarRegistry {
     public static final class Removal {
 
         private final IIngredient input;
+        private final Ingredient inputIngredient;
         @Nullable
         private final Element[] elements; // null = any elements
         private final boolean ordered;
@@ -116,6 +118,8 @@ public final class ImbuementAltarRegistry {
 
         public Removal(IIngredient input, @Nullable Element[] elements, boolean ordered, String commandString) {
             this.input = input;
+            Ingredient converted = CraftTweakerMC.getIngredient(input);
+            this.inputIngredient = converted == null ? Ingredient.EMPTY : converted;
             this.elements = elements == null ? null : Arrays.copyOf(elements, elements.length);
             this.ordered = ordered;
             this.commandString = commandString;
@@ -125,8 +129,7 @@ public final class ImbuementAltarRegistry {
             if (stack == null || stack.isEmpty()) {
                 return false;
             }
-            IItemStack ctStack = CraftTweakerMC.getIItemStack(stack);
-            if (ctStack == null || !input.matches(ctStack)) {
+            if (!this.inputIngredient.apply(stack)) {
                 return false;
             }
             if (elements == null) {
