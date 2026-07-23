@@ -6,6 +6,7 @@ import crafttweaker.api.minecraft.CraftTweakerMC;
 import electroblob.wizardry.constants.Element;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -13,14 +14,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A single imbuement altar recipe registered via CraftTweaker.
  */
 public class ImbuementAltarRecipe {
 
+    private static final Pattern ORE_DICTIONARY_COMMAND = Pattern.compile("^<ore:([^>]+)>$");
+
     private final IIngredient input;
     private final Ingredient inputIngredient;
+    @Nullable
+    private final String oreDictionaryName;
     private final IItemStack output;
     private final Element[] elements;
     private final boolean ordered;
@@ -28,6 +35,7 @@ public class ImbuementAltarRecipe {
 
     public ImbuementAltarRecipe(IIngredient input, IItemStack output, Element[] elements, boolean ordered, String commandString) {
         this.input = Objects.requireNonNull(input, "input");
+        this.oreDictionaryName = getOreDictionaryName(input);
         Ingredient converted = CraftTweakerMC.getIngredient(input);
         this.inputIngredient = converted == null ? Ingredient.EMPTY : converted;
         this.output = Objects.requireNonNull(output, "output");
@@ -63,14 +71,30 @@ public class ImbuementAltarRecipe {
         if (!matchesElements(receptacleElements)) {
             return false;
         }
-        return this.inputIngredient.apply(stack);
+        return matchesStack(stack);
     }
 
     public boolean matchesInput(ItemStack stack) {
         if (stack == null || stack.isEmpty()) {
             return false;
         }
-        return this.inputIngredient.apply(stack);
+        return matchesStack(stack);
+    }
+
+    public static boolean matchesIngredient(@Nullable IIngredient ingredient, @Nullable ItemStack stack) {
+        if (ingredient == null || stack == null || stack.isEmpty()) {
+            return false;
+        }
+        String oreDictionaryName = getOreDictionaryName(ingredient);
+        if (oreDictionaryName != null) {
+            for (ItemStack oreStack : OreDictionary.getOres(oreDictionaryName)) {
+                if (OreDictionary.itemMatches(oreStack, stack, false)) {
+                    return true;
+                }
+            }
+        }
+        Ingredient converted = CraftTweakerMC.getIngredient(ingredient);
+        return converted != null && converted.apply(stack);
     }
 
     public boolean matchesElements(Element[] receptacleElements) {
@@ -147,14 +171,30 @@ public class ImbuementAltarRecipe {
     }
 
     public List<ItemStack> getDisplayStacks() {
+        if (this.oreDictionaryName != null) {
+            List<ItemStack> oreStacks = new ArrayList<>();
+            for (ItemStack oreStack : OreDictionary.getOres(this.oreDictionaryName)) {
+                addDisplayStack(oreStacks, oreStack);
+            }
+            if (!oreStacks.isEmpty()) {
+                return oreStacks;
+            }
+        }
         return getDisplayStacks(this.inputIngredient);
     }
 
-    public static boolean matchesIngredient(@Nullable Ingredient ingredient, @Nullable ItemStack stack) {
-        if (ingredient == null || stack == null || stack.isEmpty()) {
+    private boolean matchesStack(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
             return false;
         }
-        return ingredient.apply(stack);
+        if (this.oreDictionaryName != null) {
+            for (ItemStack oreStack : OreDictionary.getOres(this.oreDictionaryName)) {
+                if (OreDictionary.itemMatches(oreStack, stack, false)) {
+                    return true;
+                }
+            }
+        }
+        return this.inputIngredient.apply(stack);
     }
 
     public static List<ItemStack> getDisplayStacks(@Nullable Ingredient ingredient) {
@@ -178,6 +218,15 @@ public class ImbuementAltarRecipe {
             }
         }
         stacks.add(stack.copy());
+    }
+
+    @Nullable
+    private static String getOreDictionaryName(@Nullable IIngredient ingredient) {
+        if (ingredient == null) {
+            return null;
+        }
+        Matcher matcher = ORE_DICTIONARY_COMMAND.matcher(ingredient.toCommandString().trim());
+        return matcher.matches() ? matcher.group(1) : null;
     }
 
     @Override
