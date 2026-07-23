@@ -10,6 +10,7 @@ import electroblob.wizardry.registry.WizardryItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.IJeiRuntime;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -25,10 +26,16 @@ public class CTImbuementAltarJeiPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime runtime) {
         if (!Wizardry.settings.jeiIntegration) {
             return;
         }
-        registry.addRecipes(generateRecipes(), IMBUEMENT_ALTAR_UID);
+        for (ImbuementAltarRecipe recipe : generateRecipes()) {
+            runtime.getRecipeRegistry().addRecipe(recipe, IMBUEMENT_ALTAR_UID);
+        }
     }
 
     private static List<ImbuementAltarRecipe> generateRecipes() {
