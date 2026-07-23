@@ -16,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 
 @JEIPlugin
 public class CTImbuementAltarJeiPlugin implements IModPlugin {
@@ -57,29 +55,14 @@ public class CTImbuementAltarJeiPlugin implements IModPlugin {
     }
 
     private static ItemStack getDisplayStack(IIngredient ingredient) {
-        ItemStack direct = CraftTweakerMC.getItemStack(ingredient);
-        if (direct != null && !direct.isEmpty()) {
-            return direct.copy();
+        if (ingredient == null) {
+            return ItemStack.EMPTY;
         }
-        try {
-            Object examples = CraftTweakerMC.class.getMethod("getExamples", IIngredient.class).invoke(null, ingredient);
-            if (examples instanceof Iterable) {
-                for (Object example : (Iterable<?>) examples) {
-                    ItemStack stack = asItemStack(example);
-                    if (stack != null && !stack.isEmpty()) {
-                        return stack.copy();
-                    }
-                }
-            } else if (examples != null && examples.getClass().isArray()) {
-                int length = Array.getLength(examples);
-                for (int i = 0; i < length; i++) {
-                    ItemStack stack = asItemStack(Array.get(examples, i));
-                    if (stack != null && !stack.isEmpty()) {
-                        return stack.copy();
-                    }
-                }
+        for (crafttweaker.api.item.IItemStack example : ingredient.getItems()) {
+            ItemStack stack = CraftTweakerMC.getItemStack(example);
+            if (stack != null && !stack.isEmpty()) {
+                return stack.copy();
             }
-        } catch (ReflectiveOperationException ignored) {
         }
         return ItemStack.EMPTY;
     }
@@ -89,9 +72,5 @@ public class CTImbuementAltarJeiPlugin implements IModPlugin {
             return ItemStack.EMPTY;
         }
         return new ItemStack(WizardryItems.spectral_dust, 1, element.ordinal());
-    }
-
-    private static ItemStack asItemStack(Object value) {
-        return value instanceof ItemStack ? (ItemStack) value : null;
     }
 }
