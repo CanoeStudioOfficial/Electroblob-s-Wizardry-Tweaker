@@ -1,5 +1,9 @@
 # Electroblob's Wizardry Tweaker
 
+> **No longer maintained**
+>
+> This mod is no longer maintained. Its Electroblob's Wizardry imbuement altar integration has been merged into the `modtweaker` module of [ModTweaker](https://github.com/CanoeStudioOfficial/ModTweaker). Please use that project for future updates and support.
+
 CraftTweaker support for [Electroblob's Wizardry](https://www.curseforge.com/minecraft/mc-mods/electroblobs-wizardry) on Minecraft 1.12.2.
 
 ## Requirements
